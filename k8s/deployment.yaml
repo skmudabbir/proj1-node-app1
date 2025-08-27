@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: proj1-node-app
+  labels: { app: proj1-node-app }
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: proj1-node-app }
+  template:
+    metadata: { labels: { app: proj1-node-app } }
+    spec:
+      containers:
+        - name: web
+          image: mudabbir1187/proj1-node-app:latest
+          ports: [{ containerPort: 3000 }]
+          readinessProbe:
+            httpGet: { path: /, port: 3000 }
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          livenessProbe:
+            httpGet: { path: /, port: 3000 }
+            initialDelaySeconds: 10
+            periodSeconds: 10
